@@ -11,6 +11,8 @@ http.createServer(function(request, response) {
 
     var uri = url.parse(request.url).pathname,
         filename = path.join(process.cwd(), uri);
+	console.log("URI: " + uri);
+	console.log("FILENAME: " + filename);
 
     path.exists(filename, function(exists) {
         if (!exists) {
@@ -21,6 +23,7 @@ http.createServer(function(request, response) {
             response.end();
             return;
         }
+	console.log("URI: " + uri);
 
         if (uri == "/") {
             var t = path.join(filename, '/index.html');
@@ -42,6 +45,9 @@ http.createServer(function(request, response) {
                 response.end()
                 return;
             });
+        } else if (uri == "/kill") {
+          console.log("KILL");
+          process.exit(1);
         }
 
         if (fs.statSync(filename).isDirectory()) filename += '/index.html';
